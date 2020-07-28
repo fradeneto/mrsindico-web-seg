@@ -14,15 +14,64 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import moment from 'moment';
 import MomentUtils from '@date-io/moment';
 import 'moment/locale/pt-br';
-import { validCPF } from 'frade-utils/validation';
+// import { validCPF } from 'frade-utils/validation';
 import { DateTime, Settings } from 'luxon';
 import * as Yup from 'yup';
 import { TextMaskCpf, TextMaskTelefone, TextMaskCelular } from '../TextMasks';
 import MsgSnackbar from '../MsgSnackbar';
-import { consultaCPF, consultaEmail } from '../../services/CadastroService';
+import { getCadastroCpf, getCadastroEmail } from '../../services/CadastroService';
 import styles from './cadastrodlg-jss';
 
 moment.locale('pt-br');
+
+const validCPF = cpf => {
+  cpf = cpf.replace(/[^\d]+/g, '');
+  if (cpf === '') return false;
+  // Elimina CPFs invalidos conhecidos
+  if (
+    cpf.length !== 11
+    || cpf === '00000000000'
+    || cpf === '11111111111'
+    || cpf === '22222222222'
+    || cpf === '33333333333'
+    || cpf === '44444444444'
+    || cpf === '55555555555'
+    || cpf === '66666666666'
+    || cpf === '77777777777'
+    || cpf === '88888888888'
+    || cpf === '99999999999'
+  ) {
+    return false;
+  }
+  // Valida 1o digito
+  let add;
+  let rev;
+  let i;
+  add = 0;
+  for (i = 0; i < 9; i += 1) {
+    add += parseInt(cpf.charAt(i), 10) * (10 - i);
+  }
+  rev = 11 - (add % 11);
+  if (rev === 10 || rev === 11) {
+    rev = 0;
+  }
+  if (rev !== parseInt(cpf.charAt(9), 10)) {
+    return false;
+  }
+  // Valida 2o digito
+  add = 0;
+  for (i = 0; i < 10; i += 1) {
+    add += parseInt(cpf.charAt(i), 10) * (11 - i);
+  }
+  rev = 11 - (add % 11);
+  if (rev === 10 || rev === 11) {
+    rev = 0;
+  }
+  if (rev !== parseInt(cpf.charAt(10), 10)) {
+    return false;
+  }
+  return true;
+};
 
 const CadastroDlg = (props) => {
   const {
@@ -33,51 +82,32 @@ const CadastroDlg = (props) => {
     handleSalvar,
     dialogTitle,
     maxWidth,
-    msgError
+    msgError,
+    dispatch
   } = props;
 
-  const [dadosCarregados, setDadosCarregados] = useState({});
-  const [emailConsultado, setEmailConsultado] = useState('');
   const [erroEmail, setErroEmail] = useState('');
+  const [erroCpf, setErroCpf] = useState('');
 
-  const carregaDados = async (cpf) => {
-    if (!dadosCarregados.cpf || (dadosCarregados.cpf && dadosCarregados.cpf !== cpf)) {
-      formik.setFieldValue('id', null);
-      await setDadosCarregados({ cpf });
-
-      const dados = await consultaCPF(cpf);
-      if (dados) {
-        await setDadosCarregados(dados);
-        Object.keys(dados).forEach((item) => {
-          if (typeof formik.values[item] !== 'undefined') {
-            formik.setFieldValue(item, dados[item]);
-            // console.log(item + ' = ' + formik.values[item]);
-          }
-        });
-      }
+  const cpfExists = async (cpf) => {
+    const cad = await getCadastroCpf(dispatch, cpf).catch(err => {
+      setErroCpf('');
+    });
+    if (cad && Object.keys(cad).length > 0) {
+      await setErroCpf('CPF já cadastrado');
+    } else {
+      setErroCpf('');
     }
   };
 
   const emailExists = async (email) => {
-    // console.log(`checkEmail:${email}:${emailConsultado}`);
-    if (dadosCarregados && dadosCarregados.email === email) {
-      await setErroEmail('');
-      return;
-    }
-    if (email !== emailConsultado) {
-      setEmailConsultado(email);
-      const cad = await consultaEmail(email).catch(err => {
-        setErroEmail('');
-      });
-      if (!cad) {
-        await setErroEmail('');
-        return;
-      }
-      if (cad && dadosCarregados && dadosCarregados.id === cad.id) {
-        await setErroEmail('');
-        return;
-      }
+    const cad = await getCadastroEmail(dispatch, email).catch(err => {
+      setErroEmail('');
+    });
+    if (cad && Object.keys(cad).length > 0) {
       await setErroEmail('Este e-mail já está em uso');
+    } else {
+      setErroEmail('');
     }
   };
 
@@ -91,6 +121,7 @@ const CadastroDlg = (props) => {
   });
 
   const validateForm = async (values) => {
+    // console.log(values);
     const errors = {};
 
     if (values.email && (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email))) {
@@ -110,7 +141,10 @@ const CadastroDlg = (props) => {
         errors.cpf = 'CPF Inválido';
       } else {
         // Consulta CPF
-        carregaDados(cpf);
+        await cpfExists(cpf);
+        if (erroCpf) {
+          errors.cpf = erroCpf;
+        }
       }
     }
 
@@ -143,7 +177,6 @@ const CadastroDlg = (props) => {
     });
     formik.setFieldValue('id', null);
     formik.setFieldValue('nascimento', null);
-    await setDadosCarregados({});
     setErroEmail('');
     handleClose();
   };
@@ -228,7 +261,7 @@ const CadastroDlg = (props) => {
                 label="RG"
                 margin="normal"
                 className="kt-width-full"
-                name="nome"
+                name="rg"
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
                 value={formik.values.rg}
@@ -412,7 +445,8 @@ CadastroDlg.propTypes = {
   handleSalvar: PropTypes.func.isRequired,
   dialogTitle: PropTypes.string,
   maxWidth: PropTypes.string,
-  msgError: PropTypes.string
+  msgError: PropTypes.string,
+  dispatch: PropTypes.func.isRequired
 };
 
 CadastroDlg.defaultProps = {

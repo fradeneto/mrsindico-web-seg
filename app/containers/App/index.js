@@ -9,18 +9,21 @@ import ThemeWrapper, { AppContext } from './ThemeWrapper';
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
 
-const App = () => (
-  <ThemeWrapper>
-    <AppContext.Consumer>
-      {(changeMode) => (
-        <Switch>
-          { isAuthenticated() ? <Route render={(props) => <AppPrivate {...props} changeMode={changeMode} />} /> : <Route component={AppPublic} /> }
-          <Route component={NotFound} />
-        </Switch>
-      )}
-    </AppContext.Consumer>
-  </ThemeWrapper>
-);
+const App = (props) => {
+  const { dispatch } = props;
+  return (
+    <ThemeWrapper>
+      <AppContext.Consumer>
+        {(changeMode) => (
+          <Switch>
+            { isAuthenticated() ? <Route render={(props2) => <AppPrivate {...props2} dispatch={dispatch} changeMode={changeMode} />} /> : <Route component={AppPublic} /> }
+            <Route component={NotFound} />
+          </Switch>
+        )}
+      </AppContext.Consumer>
+    </ThemeWrapper>
+  );
+};
 
 export default connect(state => ({
   force: state,

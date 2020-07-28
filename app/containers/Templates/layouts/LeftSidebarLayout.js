@@ -10,14 +10,12 @@ import {
   BreadCrumb,
 } from 'components';
 import defaultMenu from 'api/ui/menu';
-import adminMenu from 'api/ui/menuAdmin';
 import Decoration from '../Decoration';
 import styles from '../appStyles-jss';
 
 class LeftSidebarLayout extends React.Component {
-  
   render() {
-    const sistema = sessionStorage.getItem('sistema')
+    const sistema = sessionStorage.getItem('sistema');
 
     const {
       classes,
@@ -33,12 +31,14 @@ class LeftSidebarLayout extends React.Component {
       bgPosition,
       changeMode,
       place,
-      titleException    
+      titleException,
+
     } = this.props;
 
-    let dataMenu = adminMenu;
+    const dataMenu = defaultMenu;
 
-    //if (this.state.sistema === 'admin') dataMenu = adminMenu
+
+    // if (this.state.sistema === 'admin') dataMenu = adminMenu
 
     return (
       <Fragment>
@@ -56,7 +56,7 @@ class LeftSidebarLayout extends React.Component {
           open={sidebarOpen}
           toggleDrawerOpen={toggleDrawer}
           loadTransition={loadTransition}
-          dataMenu={sistema==='admin' ? adminMenu : defaultMenu}
+          dataMenu={sistema === 'admin' ? dataMenu : defaultMenu}
           leftSidebar
         />
         <main className={classNames(classes.content, !sidebarOpen ? classes.contentPaddingLeft : '')} id="mainContent">
@@ -68,7 +68,7 @@ class LeftSidebarLayout extends React.Component {
             horizontalMenu={false}
           />
           <section className={classNames(classes.mainWrap, classes.sidebarLayout)}>
-            {titleException.indexOf(history.location.pathname) < 0 && 1=== 2 && (
+            {titleException.indexOf(history.location.pathname) < 0 && 1 === 2 && (
               <div className={classes.pageTitle}>
                 <Typography component="h4" className={bgPosition === 'header' ? classes.darkTitle : classes.lightTitle} variant="h4">{place}</Typography>
                 <BreadCrumb separator=" / " theme={bgPosition === 'header' ? 'dark' : 'light'} location={history.location} />

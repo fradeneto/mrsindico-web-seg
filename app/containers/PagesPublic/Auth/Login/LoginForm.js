@@ -76,7 +76,8 @@ const LoginForm = props => {
       formik.setStatus(resp);
       setSubmitting(false);
     } else {
-      props.history.push('/app');
+      console.log(process.env.APP_SUBDIR);
+      props.history.push('/home');
     }
   };
 

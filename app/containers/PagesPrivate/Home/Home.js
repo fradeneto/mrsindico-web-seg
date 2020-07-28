@@ -17,7 +17,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import { data1 } from './sampleData';
-import SessionData from './SessionData';
+import Liberacao from './Liberacao';
 import styles from './fluidChart-jss';
 
 const Home = props => {
@@ -28,7 +28,7 @@ const Home = props => {
 
   return (
     <>
-      <SessionData />
+      <Liberacao />
       <PapperBlock title="Blank Page" desc="Some text description">
         <Helmet>
           <title>{title}</title>

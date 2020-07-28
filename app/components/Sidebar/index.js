@@ -9,22 +9,32 @@ import dummy from 'api/dummy/dummyContents';
 import styles from './sidebar-jss';
 import SidebarContent from './SidebarContent';
 
+import menu from '../../api/ui/menu';
+
 class Sidebar extends React.Component {
   state = {
     status: dummy.user.status,
     anchorEl: null,
-    turnDarker: false
+    turnDarker: false,
+    menuContent: []
   };
 
   // Initial header style
   flagDarker = false;
 
   componentDidMount = () => {
+    this.carregarMenu();
     window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  carregarMenu = async () => {
+    this.setState({
+      menuContent: menu
+    });
   }
 
   handleScroll = () => {
@@ -59,7 +69,9 @@ class Sidebar extends React.Component {
       leftSidebar,
       dataMenu
     } = this.props;
-    const { status, anchorEl, turnDarker } = this.state;
+    const {
+      status, anchorEl, turnDarker, menuContent
+    } = this.state;
     return (
       <Fragment>
         <Hidden lgUp>
@@ -75,7 +87,7 @@ class Sidebar extends React.Component {
                 leftSidebar={leftSidebar}
                 toggleDrawerOpen={toggleDrawerOpen}
                 loadTransition={loadTransition}
-                dataMenu={dataMenu}
+                dataMenu={menuContent}
                 status={status}
                 anchorEl={anchorEl}
                 openMenuStatus={this.handleOpen}
@@ -100,7 +112,7 @@ class Sidebar extends React.Component {
               leftSidebar={leftSidebar}
               turnDarker={turnDarker}
               loadTransition={loadTransition}
-              dataMenu={dataMenu}
+              dataMenu={menuContent}
               status={status}
               anchorEl={anchorEl}
               openMenuStatus={this.handleOpen}

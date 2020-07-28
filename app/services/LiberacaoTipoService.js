@@ -1,7 +1,7 @@
 import { GET } from './RESTClient';
 
-export const listUnidades = async (dispatch, config) => {
-  const resposta = await GET(dispatch, '/unidade', config);
+export const listTipos = async (dispatch, config) => {
+  const resposta = await GET(dispatch, '/liberacaotipo', config);
   return resposta.data;
 };
 

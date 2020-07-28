@@ -10,13 +10,25 @@ const GET_ME_URL = '/me';
 // const REGISTER_URL = '/register'
 // const FORGET_PASSWORD = '/forget'
 
-export const isAuthenticated = () => false;
+export const isAuthenticated = () => {
+  const sistemas = sessionStorage.getItem('sistemas');
+
+  if (!axios.defaults.headers.common.Authorization) {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common = { Authorization: `bearer ${token}` };
+    } else {
+      return '';
+    }
+  }
+  return sistemas.includes('seguranca');
+};
 
 export const login = async (dispatch, email, password) => {
   let resposta = '';
   await axios.post(LOGIN_URL, { email, password })
-    .then(({ data: { token, user, sistema } }) => {
-      loginUser(dispatch, token, user, sistema);
+    .then(({ data: { token, user, sistemas } }) => {
+      loginUser(dispatch, token, user, sistemas);
       resposta = '';
     })
     .catch((err) => {
@@ -53,18 +65,18 @@ export const getMe = async dispatch => {
   });
 };
 
-const loginUser = async (dispatch, token, user, sistema) => {
+const loginUser = async (dispatch, token, user, sistemas) => {
   sessionStorage.setItem('token', token);
   sessionStorage.setItem('userId', user.id);
   sessionStorage.setItem('userAvatar', user.avatar_url);
   sessionStorage.setItem('userNome', user.nome);
   sessionStorage.setItem('userSexo', user.sexo);
   sessionStorage.setItem('userTratamento', user.tratamento);
-  sessionStorage.setItem('sistema', sistema);
+  sessionStorage.setItem('sistemas', sistemas);
   axios.defaults.headers.common = {
     Authorization: `bearer ${token}`
   };
-  dispatch(registerUser(token, user, sistema));
+  dispatch(registerUser(token, user, sistemas));
 };
 
 export const recoverPassword = async (dispatch, email) => {

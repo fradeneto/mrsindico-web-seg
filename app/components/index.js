@@ -23,6 +23,6 @@ export AlertDlg from './AlertDlg';
 export MsgSnackbar from './MsgSnackbar';
 export ModalWindow from './ModalWindow';
 export CadastroDlg from './CadastroDlg';
-export PrestadorHorarioDlg from './PrestadorHorarioDlg';
-export VeiculoDlg from './VeiculoDlg';
 export * from './TextMasks';
+
+export SelectSuggestion from './SelectSuggestion/SelectSuggestion';

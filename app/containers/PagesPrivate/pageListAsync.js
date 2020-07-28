@@ -5,6 +5,10 @@ export const Home = Loadable({
   loader: () => import('./Home/Home'),
   loading: Loading,
 });
+export const Liberacao = Loadable({
+  loader: () => import('./Liberacao'),
+  loading: Loading,
+});
 
 /*
 export const Unidade = Loadable({

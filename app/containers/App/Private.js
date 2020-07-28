@@ -6,12 +6,16 @@ import * as Pages from '../PagesPrivate/pageListAsync';
 
 class PrivateRoutes extends React.Component {
   render() {
-    const { changeMode, history } = this.props;
+    const { changeMode, history, dispatch } = this.props;
+
     return (
-      <Dashboard history={history} changeMode={changeMode}>
+      <Dashboard history={history} changeMode={changeMode} dispatch={dispatch}>
         <Switch>
           <Route exact path="/" component={Pages.Home} />
-          <Route exact path="/app" component={Pages.Home} />
+          <Route exact path="/home" component={Pages.Home} />
+          <Route exact path="/liberacao">
+            <Pages.Liberacao dispatch={dispatch} />
+          </Route>
           <Route path="/not-found" component={Pages.NotFoundDedicated} />
           <Route path="/error" component={Pages.Error} />
           <Route component={Pages.NotFound} />
@@ -24,6 +28,7 @@ class PrivateRoutes extends React.Component {
 PrivateRoutes.propTypes = {
   changeMode: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default PrivateRoutes;

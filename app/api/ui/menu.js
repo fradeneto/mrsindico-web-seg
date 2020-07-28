@@ -1,32 +1,28 @@
 module.exports = [
   {
-    key: 'submenu',
+    key: 'menu-principal',
     name: 'Menu Principal',
     icon: 'ios-add',
     child: [
       {
-        key: 'sub1',
+        key: 'home',
         name: 'Home',
-        link: '/app',
+        link: '/',
         icon: 'ios-add',
       },
       {
-        key: 'sub1',
-        name: 'Data Table',
-        link: '/app/table',
+        key: 'liberacao',
+        name: 'Liberação',
+        link: '/liberacao',
         icon: 'ios-add',
       },
       {
-        key: 'sub2',
-        name: 'Grupo XXXX',
-        title: true,
+        key: 'liberacoes',
+        name: 'Liberações',
+        link: '/liberacoes',
+        icon: 'ios-add',
       },
-      {
-        key: 'sub3',
-        name: 'Form',
-        link: '/app/form',
-        icon: 'ios-home-outline',
-      },
+
     ]
   },
 ];

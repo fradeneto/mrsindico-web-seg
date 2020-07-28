@@ -14,11 +14,11 @@ class PublicRoutes extends React.Component {
     return (
       <Outer>
         <Switch>
-          <Route exact path="/" component={Login} />
           <Route exact path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/recover-password" component={RecoverPassword} />
           <Route path="/reset-password/:recoverCode" component={ResetPassword} />
+          <Route path="/" component={Login} />
           <Route component={NotFound} />
         </Switch>
       </Outer>
