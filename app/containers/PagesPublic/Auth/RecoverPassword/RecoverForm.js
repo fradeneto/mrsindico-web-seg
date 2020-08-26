@@ -18,7 +18,7 @@ import { MsgSnackbar } from 'components';
 import styles from '../user-jss';
 import { recoverPassword } from '../../../../services/AuthService';
 
-const subdomain = process.env.API_URL;
+const subdomain = process.env.APP_SUBDOMAIN;
 
 const ResetForm = props => {
   const {
