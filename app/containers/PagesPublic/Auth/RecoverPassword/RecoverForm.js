@@ -18,6 +18,8 @@ import { MsgSnackbar } from 'components';
 import styles from '../user-jss';
 import { recoverPassword } from '../../../../services/AuthService';
 
+const subdomain = process.env.API_URL;
+
 const ResetForm = props => {
   const {
     classes, deco, submitting, pristine
@@ -39,7 +41,8 @@ const ResetForm = props => {
   const submitForm = async (values, { setSubmitting }) => {
     const resp = await recoverPassword(
       props.dispatch,
-      values.email
+      values.email,
+      subdomain
     );
     if (resp) {
       formik.setStatus(resp);

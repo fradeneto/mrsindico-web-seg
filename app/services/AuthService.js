@@ -79,10 +79,10 @@ const loginUser = async (dispatch, token, user, sistemas) => {
   dispatch(registerUser(token, user, sistemas));
 };
 
-export const recoverPassword = async (dispatch, email) => {
+export const recoverPassword = async (dispatch, email, subdomain) => {
   let resposta = '';
 
-  await axios.post(RECOVER_URL, { email, subdomain: process.env.API_URL })
+  await axios.post(RECOVER_URL, { email, subdomain })
     .then(({ data: message }) => {
       resposta = message.message;
     })
