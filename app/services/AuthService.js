@@ -82,7 +82,7 @@ const loginUser = async (dispatch, token, user, sistemas) => {
 export const recoverPassword = async (dispatch, email) => {
   let resposta = '';
 
-  await axios.post(RECOVER_URL, { email })
+  await axios.post(RECOVER_URL, { email, subdomain: process.env.API_URL })
     .then(({ data: message }) => {
       resposta = message.message;
     })
