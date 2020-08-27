@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'api/dummy/brand';
 
@@ -16,20 +16,33 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
-import { data1 } from './sampleData';
+import {
+  data1, data2, data3, data4, data5, data6, data7, data8, data9
+} from './sampleData';
 import Liberacao from './Liberacao';
 import styles from './fluidChart-jss';
+
+import { liberacoesTurno } from '../../../services/LiberacaoService';
 
 const Home = props => {
   const title = brand.name + ' - Admin';
   const description = brand.desc;
 
-  const { classes } = props;
+  const { classes, dispatch } = props;
+
+  const [dataTurno, setDataTurno] = useState([]);
+
+  const loadLiberacoesTurno = async () => {
+    const total = await liberacoesTurno(dispatch);
+    setDataTurno(total);
+  };
+  useEffect(() => {
+    loadLiberacoesTurno();
+  }, []);
 
   return (
     <>
-      <Liberacao />
-      <PapperBlock title="Blank Page" desc="Some text description">
+      <PapperBlock title="Liberações" desc="Gráfico da quantidade de liberações da última semana">
         <Helmet>
           <title>{title}</title>
           <meta name="description" content={description} />
@@ -43,7 +56,7 @@ const Home = props => {
             <LineChart
               width={800}
               height={450}
-              data={data1}
+              data={dataTurno}
               margin={{
                 top: 5,
                 right: 30,
@@ -51,14 +64,15 @@ const Home = props => {
                 bottom: 5
               }}
             >
-              <XAxis dataKey="name" tickLine={false} />
+              <XAxis dataKey="dia" tickLine={false} />
               <YAxis axisLine={false} tickSize={3} tickLine={false} tick={{ stroke: 'none' }} />
               <CartesianGrid vertical={false} strokeDasharray="3 3" />
               <CartesianAxis vertical={false} />
               <Tooltip />
               <Legend iconType="circle" verticalALign="bottom" iconSize={10} />
-              <Line type="monotone" dataKey="pv" strokeWidth={5} stroke="#8884d8" activeDot={{ r: 8 }} />
-              <Line type="monotone" dataKey="uv" strokeWidth={5} stroke="#82ca9d" />
+              <Line type="monotone" dataKey="m" strokeWidth={5} stroke="#82ca9d" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="t" strokeWidth={5} stroke="#ffe050" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="n" strokeWidth={5} stroke="#8884d8" activeDot={{ r: 8 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>

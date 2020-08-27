@@ -16,6 +16,9 @@ class PrivateRoutes extends React.Component {
           <Route exact path="/liberacao">
             <Pages.Liberacao dispatch={dispatch} />
           </Route>
+          <Route exact path="/liberacoes">
+            <Pages.Liberacoes dispatch={dispatch} />
+          </Route>
           <Route path="/not-found" component={Pages.NotFoundDedicated} />
           <Route path="/error" component={Pages.Error} />
           <Route component={Pages.NotFound} />

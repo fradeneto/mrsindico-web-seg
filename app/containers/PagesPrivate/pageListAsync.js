@@ -9,6 +9,10 @@ export const Liberacao = Loadable({
   loader: () => import('./Liberacao'),
   loading: Loading,
 });
+export const Liberacoes = Loadable({
+  loader: () => import('./Liberacoes'),
+  loading: Loading,
+});
 
 /*
 export const Unidade = Loadable({
