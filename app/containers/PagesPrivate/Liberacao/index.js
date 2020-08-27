@@ -216,7 +216,7 @@ const Liberacao = props => {
           <Button size="small" className={classes.btnEdit}>
             <EditIcon />
           </Button>
-          <CopyToClipboard text="abc">
+          <CopyToClipboard text={`ms91${rowData.id}`}>
             <Button size="small" className={classes.btnBiometriaOn}>
               <Fingerprint />
             </Button>
