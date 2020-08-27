@@ -94,6 +94,7 @@
     "luxon": "^1.22.0",
     "material-table": "^1.57.1",
     "moment": "^2.22.2",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-select": "^3.1.0",
     "react-text-mask": "^5.4.3",
     "recharts": "^2.0.0-beta.1",

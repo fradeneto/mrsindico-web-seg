@@ -133,7 +133,7 @@ const Liberacao = props => {
 
   return (
     <>
-      <PapperBlock title="Liberaçções" desc="Lista de liberações">
+      <PapperBlock title="Liberações" desc="Lista de liberações">
         <DataTable
           tableRef={tableRef}
           options={options}

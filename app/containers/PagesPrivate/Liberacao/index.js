@@ -9,12 +9,14 @@ import {
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import AddCircle from '@material-ui/icons/AddCircle';
+import { AddCircle, Fingerprint, Edit as EditIcon } from '@material-ui/icons';
+
 import AddToPhotos from '@material-ui/icons/AddToPhotos';
 import Button from '@material-ui/core/Button';
 import CadastroDlg from 'components/CadastroDlg';
 import { findLastIndex } from 'lodash';
 
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 import LiberacaoUnidade from './LiberacaoUnidade';
 import LiberacaoTipo from './LiberacaoTipo';
@@ -48,12 +50,28 @@ const styles = theme => ({
   iconSmall: {
     fontSize: 20,
   },
-  btnAction: {
+  btnEdit: {
     margin: theme.spacing(0),
     paddingTop: 3,
     paddingBottom: 3,
     paddingLeft: 8,
     paddingRight: 8,
+    color: '#000000'
+  },
+  btnBiometriaOn: {
+    margin: theme.spacing(0),
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 0,
+    paddingRight: 0,
+    color: '#0066aa',
+  },
+  btnBiometriaOff: {
+    margin: theme.spacing(0),
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 0,
+    paddingRight: 0,
     color: '#006600'
   },
   container: {
@@ -79,6 +97,7 @@ const Liberacao = props => {
   const {
     classes, history, unidadeId, dispatch
   } = props;
+
 
   const [liberarCadastros, setLiberarCadastros] = React.useState([]);
   const [liberarUnidades, setLiberarUnidades] = React.useState([]);
@@ -172,7 +191,13 @@ const Liberacao = props => {
       type: 'string',
       filterPlaceholder: 'Nome',
       cellStyle: { textAlign: 'left', minWidth: '300px' },
-
+      render: rowData => (
+        <React.Fragment>
+          <Button size="small" onClick={() => (setLiberarCadastros([...liberarCadastros, rowData]))}>
+            {rowData.nome}
+          </Button>
+        </React.Fragment>
+      )
     },
     {
       title: 'CPF',
@@ -188,12 +213,23 @@ const Liberacao = props => {
       headerStyle: { textAlign: 'center' },
       render: rowData => (
         <React.Fragment>
-          <Button size="small" onClick={() => (setLiberarCadastros([...liberarCadastros, rowData]))} className={classes.btnAction}>
+          <Button size="small" className={classes.btnEdit}>
+            <EditIcon />
+          </Button>
+          <CopyToClipboard text="abc">
+            <Button size="small" className={classes.btnBiometriaOn}>
+              <Fingerprint />
+            </Button>
+          </CopyToClipboard>
+          {/*
+<Button size="small" onClick={() => (setLiberarCadastros([...liberarCadastros, rowData]))} className={classes.btnAction}>
             <AddCircle />
             {' '}
             &nbsp;
             Add
           </Button>
+          */}
+
         </React.Fragment>
       )
     }
