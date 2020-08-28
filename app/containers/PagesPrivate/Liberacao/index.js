@@ -221,15 +221,6 @@ const Liberacao = props => {
               <Fingerprint />
             </Button>
           </CopyToClipboard>
-          {/*
-<Button size="small" onClick={() => (setLiberarCadastros([...liberarCadastros, rowData]))} className={classes.btnAction}>
-            <AddCircle />
-            {' '}
-            &nbsp;
-            Add
-          </Button>
-          */}
-
         </React.Fragment>
       )
     }
