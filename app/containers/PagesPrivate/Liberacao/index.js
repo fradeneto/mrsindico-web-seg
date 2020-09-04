@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from 'api/dummy/brand';
 import Chip from '@material-ui/core/Chip';
@@ -105,8 +105,19 @@ const Liberacao = props => {
   const [addError, setAddError] = React.useState('');
   const [openAdd, setOpenAdd] = React.useState(false);
   const [msgError, setMsgError] = React.useState('');
+  const [userID, setUserID] = React.useState(0);
+  const [fpToken, setFpToken] = React.useState('');
   const tableRef = React.createRef();
   const formLiberacaoTipoRef = useRef(null);
+
+  useEffect(() => {
+    const loadValues = async () => {
+      const idUsr = await sessionStorage.getItem('userId');
+      setUserID(parseInt(idUsr, 10));
+      setFpToken('Nzmsx7a0fFo8');
+    };
+    loadValues();
+  }, []);
 
   const setTipo = async (id) => {
     setTipoLiberacao(id);
@@ -216,7 +227,7 @@ const Liberacao = props => {
           <Button size="small" className={classes.btnEdit}>
             <EditIcon />
           </Button>
-          <CopyToClipboard text={`ms91${rowData.id}`}>
+          <CopyToClipboard text={`ms91${String(rowData.id).padStart(6, '0')}${String(userID).padStart(6, '0')}${fpToken}`}>
             <Button size="small" className={classes.btnBiometriaOn}>
               <Fingerprint />
             </Button>
