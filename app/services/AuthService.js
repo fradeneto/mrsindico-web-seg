@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { registerUser } from '../redux/modules/user';
 
+const SISTEMA = 'seguranca';
+
 const LOGIN_URL = '/login';
 const RECOVER_URL = '/forgot-password';
 const RESET_URL = '/reset-password';
@@ -21,7 +23,13 @@ export const isAuthenticated = () => {
       return '';
     }
   }
-  return sistemas.includes('seguranca');
+  // ---------------------------------
+  // SISTEMA ATUAL
+  // ---------------------------------
+  return sistemas.includes(SISTEMA); // <==============================================
+  // ---------------------------------
+  // SISTEMA ATUAL
+  // ---------------------------------
 };
 
 export const login = async (dispatch, email, password) => {
@@ -29,7 +37,11 @@ export const login = async (dispatch, email, password) => {
   await axios.post(LOGIN_URL, { email, password })
     .then(({ data: { token, user, sistemas } }) => {
       loginUser(dispatch, token, user, sistemas);
-      resposta = '';
+      if (sistemas.includes(SISTEMA)) { // <===========================================
+        resposta = '';
+      } else {
+        resposta = 'Você não tem permissão para acessar este sistema.';
+      }
     })
     .catch((err) => {
       if (err.response && err.response.data && err.response.data.message) {

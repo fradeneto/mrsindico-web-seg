@@ -23,6 +23,7 @@ export AlertDlg from './AlertDlg';
 export MsgSnackbar from './MsgSnackbar';
 export ModalWindow from './ModalWindow';
 export CadastroDlg from './CadastroDlg';
+export KeyPressF from './KeyPressF';
 export * from './TextMasks';
 
 export SelectSuggestion from './SelectSuggestion/SelectSuggestion';

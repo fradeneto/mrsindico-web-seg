@@ -12,10 +12,11 @@ import Ionicon from 'react-ionicons';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import DoorIcon from '@material-ui/icons/LockOpen';
 import UserMenu from './UserMenu';
 import SearchUi from '../Search/SearchUi';
 import styles from './header-jss';
-
+import { abrirPorta } from '../../services/AbrirPortaService';
 const elem = document.documentElement;
 
 class Header extends React.Component {
@@ -89,6 +90,10 @@ class Header extends React.Component {
     }
   };
 
+  openDoor = async () => {
+    await abrirPorta();
+  }
+
   render() {
     const {
       classes,
@@ -97,7 +102,7 @@ class Header extends React.Component {
       position,
       gradient,
       mode,
-      title,      
+      title,
       history
     } = this.props;
     const {
@@ -160,6 +165,12 @@ class Header extends React.Component {
                     <Ionicon icon="ios-bulb-outline" />
                   </IconButton>
                 </Tooltip>
+                <Tooltip title="Abrir Porta" placement="bottom">
+                  <IconButton className={classes.button} onClick={() => this.openDoor()}>
+                    <DoorIcon />
+                  </IconButton>
+
+                </Tooltip>
               </div>
               <Typography component="h2" className={classNames(classes.headerTitle, showTitle && classes.show)}>
                 {title}
@@ -192,7 +203,7 @@ Header.propTypes = {
   position: PropTypes.string.isRequired,
   mode: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  changeMode: PropTypes.func.isRequired,  
+  changeMode: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };
 

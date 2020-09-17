@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { isAuthenticated } from 'services/AuthService';
 import NotFound from 'containers/Pages/Standalone/NotFoundDedicated';
+
 import AppPublic from './Public';
 import AppPrivate from './Private';
 import ThemeWrapper, { AppContext } from './ThemeWrapper';
-window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
+window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
 const App = (props) => {
   const { dispatch } = props;
