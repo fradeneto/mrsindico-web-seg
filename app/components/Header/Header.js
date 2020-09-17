@@ -12,7 +12,7 @@ import Ionicon from 'react-ionicons';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import DoorIcon from '@material-ui/icons/LockOpen';
+import DoorIcon from '@material-ui/icons/MeetingRoom';
 import UserMenu from './UserMenu';
 import SearchUi from '../Search/SearchUi';
 import styles from './header-jss';
