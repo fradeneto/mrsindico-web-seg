@@ -13,6 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import DoorIcon from '@material-ui/icons/MeetingRoom';
+import CatracaIcon from '@material-ui/icons/DirectionsWalk';
 import UserMenu from './UserMenu';
 import SearchUi from '../Search/SearchUi';
 import styles from './header-jss';
@@ -90,8 +91,8 @@ class Header extends React.Component {
     }
   };
 
-  openDoor = async () => {
-    await abrirPorta();
+  openDoor = async (id) => {
+    await abrirPorta(id);
   }
 
   render() {
@@ -166,10 +167,19 @@ class Header extends React.Component {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Abrir Porta" placement="bottom">
-                  <IconButton className={classes.button} onClick={() => this.openDoor()}>
+                  <IconButton className={classes.button} onClick={() => this.openDoor(1)}>
                     <DoorIcon />
                   </IconButton>
-
+                </Tooltip>
+                <Tooltip title="Abrir Catraca 1" placement="bottom">
+                  <IconButton className={classes.button} onClick={() => this.openDoor(2)}>
+                    <CatracaIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Abrir Catraca 2" placement="bottom">
+                  <IconButton className={classes.button} onClick={() => this.openDoor(3)}>
+                    <CatracaIcon />
+                  </IconButton>
                 </Tooltip>
               </div>
               <Typography component="h2" className={classNames(classes.headerTitle, showTitle && classes.show)}>

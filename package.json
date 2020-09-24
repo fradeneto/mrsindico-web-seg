@@ -1,6 +1,6 @@
 {
   "name": "frade-boilerplate",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "React website tempate with focus on perfomance and design",
   "private": true,
   "engines": {
