@@ -11,6 +11,12 @@ module.exports = [
         icon: 'ios-add',
       },
       {
+        key: 'cadastros',
+        name: 'Cadastros',
+        link: '/cadastros',
+        icon: 'ios-add',
+      },
+      {
         key: 'liberacao',
         name: 'Liberação',
         link: '/liberacao',
@@ -22,6 +28,13 @@ module.exports = [
         link: '/liberacoes',
         icon: 'ios-add',
       },
+      {
+        key: 'veiculos',
+        name: 'Veículos',
+        link: '/veiculos',
+        icon: 'ios-add',
+      },
+
 
     ]
   },

@@ -217,6 +217,12 @@ const Liberacao = props => {
       filterPlaceholder: 'CPF',
       cellStyle: { textAlign: 'center' },
       headerStyle: { textAlign: 'center' },
+      render: rowData => {
+        if (rowData.cpf) {
+          return (`${String(rowData.cpf).substr(0, 3)}.***.***-${String(rowData.cpf).substr(9, 2)}`);
+        }
+        return ' ';
+      }
     },
     {
       title: 'Ações',

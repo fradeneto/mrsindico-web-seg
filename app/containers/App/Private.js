@@ -13,11 +13,17 @@ class PrivateRoutes extends React.Component {
         <Switch>
           <Route exact path="/" component={Pages.Home} />
           <Route exact path="/home" component={Pages.Home} />
+          <Route exact path="/cadastros">
+            <Pages.Cadastros dispatch={dispatch} />
+          </Route>
           <Route exact path="/liberacao">
             <Pages.Liberacao dispatch={dispatch} />
           </Route>
           <Route exact path="/liberacoes">
             <Pages.Liberacoes dispatch={dispatch} />
+          </Route>
+          <Route exact path="/veiculos">
+            <Pages.Veiculos dispatch={dispatch} />
           </Route>
           <Route path="/not-found" component={Pages.NotFoundDedicated} />
           <Route path="/error" component={Pages.Error} />

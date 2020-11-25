@@ -1,20 +1,14 @@
 import React, { useRef } from 'react';
-import { Helmet } from 'react-helmet';
-import brand from 'api/dummy/brand';
-import Chip from '@material-ui/core/Chip';
 import {
   DataTable, PapperBlock,
-  MsgSnackbar
 } from 'components';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import AddCircle from '@material-ui/icons/AddCircle';
-import AddToPhotos from '@material-ui/icons/AddToPhotos';
 import Button from '@material-ui/core/Button';
-
+import { Ballot as VinculoIcon } from '@material-ui/icons';
 import moment from 'moment';
-import { getLiberacoes } from '../../../services/LiberacaoService';
+import { getVeiculos } from '../../../services/VeiculoService';
 
 
 const styles = theme => ({
@@ -69,10 +63,11 @@ const styles = theme => ({
   }
 });
 
-const Liberacao = props => {
+const Veiculo = props => {
   const {
     classes, history, dispatch
   } = props;
+
 
   const tableRef = React.createRef();
 
@@ -82,54 +77,46 @@ const Liberacao = props => {
 
   const columns = [
     {
-      title: 'Data',
-      field: 'created_at',
-      type: 'date',
-      filterPlaceholder: 'Data',
-      render: rowData => moment(rowData.created_at).format('DD/MM/YYYY HH:mm:ss')
+      title: 'Marca',
+      field: 'modelo.marca.marca',
+      type: 'string',
+      filterPlaceholder: 'Marca',
     },
     {
-      title: 'Nome',
-      field: 'cadastro.nome',
+      title: 'Modelo',
+      field: 'modelo.modelo',
       type: 'string',
-      filterPlaceholder: 'Nome',
-      cellStyle: { textAlign: 'left', minWidth: '300px' },
-
+      filterPlaceholder: 'Modelo',
     },
     {
       title: 'Torre',
       field: 'unidade.grupo.nome_resumido',
       type: 'string',
       filterPlaceholder: 'Torre',
-      // cellStyle: { textAlign: 'left', maxWidth: '100px' },
     },
     {
       title: 'Apto',
       field: 'unidade.nome',
       type: 'string',
       filterPlaceholder: 'Apto',
-      // cellStyle: { textAlign: 'left', minWidth: '300px' },
-
     },
-    /* {
-      title: 'Unidade',
-      field: 'unidade',
-      type: 'string',
-      filterPlaceholder: 'Unidade',
-      render: rowData => {
-        if (rowData.unidade) {
-          return (
-            `${rowData.unidade.grupo.nome.substr(0, 2)} / ${rowData.unidade.nome}`
-          );
-        }
-        return ' ';
-      }
-    }, */
     {
-      title: 'Tipo',
-      field: 'tipo.tipo',
+      title: 'Placa',
+      field: 'placa',
       type: 'string',
-      filterPlaceholder: 'Tipo',
+      filterPlaceholder: 'Placa',
+    },
+    {
+      title: 'Cor',
+      field: 'cor.nome',
+      type: 'string',
+      filterPlaceholder: 'Cor',
+    },
+    {
+      title: 'Ano',
+      field: 'ano_modelo',
+      type: 'string',
+      filterPlaceholder: 'Ano',
     },
     /* {
       title: 'Ações',
@@ -137,11 +124,8 @@ const Liberacao = props => {
       headerStyle: { textAlign: 'center' },
       render: rowData => (
         <React.Fragment>
-          <Button size="small" onClick={() => alert('ok')} className={classes.btnAction}>
-            <AddCircle />
-            {' '}
-            &nbsp;
-            Add
+          <Button color="primary" size="small" onClick={() => (handleClickOpenVinculos(rowData.id, rowData.nome))} className={classes.btnVinculo}>
+            <VinculoIcon />
           </Button>
         </React.Fragment>
       )
@@ -168,15 +152,15 @@ const Liberacao = props => {
 
   return (
     <>
-      <PapperBlock title="Liberações" desc="Lista de liberações">
+      <PapperBlock title="Veículos" desc="Lista de cadastros">
         <DataTable
           tableRef={tableRef}
           options={options}
           style={cssTabela}
-          title="Unidades"
+          title="Veiculos"
           columns={columns}
           data={query => new Promise((resolve, reject) => {
-            getLiberacoes(dispatch, query).then(result => {
+            getVeiculos(dispatch, query).then(result => {
               resolve({
                 data: result.data.data,
                 page: result.data.page,
@@ -203,4 +187,4 @@ const Liberacao = props => {
   );
 };
 
-export default withStyles(styles)(Liberacao);
+export default withStyles(styles)(Veiculo);

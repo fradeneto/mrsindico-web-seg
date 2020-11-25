@@ -5,12 +5,20 @@ export const Home = Loadable({
   loader: () => import('./Home/Home'),
   loading: Loading,
 });
+export const Cadastros = Loadable({
+  loader: () => import('./Cadastros'),
+  loading: Loading,
+});
 export const Liberacao = Loadable({
   loader: () => import('./Liberacao'),
   loading: Loading,
 });
 export const Liberacoes = Loadable({
   loader: () => import('./Liberacoes'),
+  loading: Loading,
+});
+export const Veiculos = Loadable({
+  loader: () => import('./Veiculos'),
   loading: Loading,
 });
 

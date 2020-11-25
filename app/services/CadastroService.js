@@ -29,3 +29,8 @@ export const atualizarCadastro = async (dispatch, cadastro) => {
   const resposta = await PUT(dispatch, '/cadastro', cadastro);
   return resposta;
 };
+
+export const getVinculos = async (id, dispatch) => {
+  const resposta = await GET(dispatch, `/cadastro/${id}/vinculos`);
+  return resposta.data;
+};

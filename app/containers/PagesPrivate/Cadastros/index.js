@@ -4,7 +4,7 @@ import brand from 'api/dummy/brand';
 import Chip from '@material-ui/core/Chip';
 import {
   DataTable, PapperBlock,
-  MsgSnackbar
+  MsgSnackbar, CadastroVinculosDlg
 } from 'components';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,9 +12,9 @@ import { withStyles } from '@material-ui/core/styles';
 import AddCircle from '@material-ui/icons/AddCircle';
 import AddToPhotos from '@material-ui/icons/AddToPhotos';
 import Button from '@material-ui/core/Button';
-
+import { Ballot as VinculoIcon } from '@material-ui/icons';
 import moment from 'moment';
-import { getLiberacoes } from '../../../services/LiberacaoService';
+import { getCadastros, getVinculos } from '../../../services/CadastroService';
 
 
 const styles = theme => ({
@@ -74,6 +74,24 @@ const Liberacao = props => {
     classes, history, dispatch
   } = props;
 
+  const [openVinculos, setOpenVinculos] = React.useState(false);
+  const [vinculos, setVinculos] = React.useState({});
+  const [vinculoNome, setVinculoNome] = React.useState('');
+
+  // Vinculos ============================================================================
+  async function handleClickOpenVinculos(id, nome) {
+    const cadVinculos = await getVinculos(id);
+    await setVinculos(cadVinculos);
+    await setVinculoNome(nome);
+    setOpenVinculos(true);
+  }
+
+  async function handleClickCloseVinculos() {
+    setVinculos({});
+    setOpenVinculos(false);
+  }
+  // Vinculos ============================================================================
+
   const tableRef = React.createRef();
 
   const cssTabela = {
@@ -82,70 +100,46 @@ const Liberacao = props => {
 
   const columns = [
     {
-      title: 'Data',
-      field: 'created_at',
-      type: 'date',
-      filterPlaceholder: 'Data',
-      render: rowData => moment(rowData.created_at).format('DD/MM/YYYY HH:mm:ss')
-    },
-    {
       title: 'Nome',
-      field: 'cadastro.nome',
+      field: 'nome',
       type: 'string',
       filterPlaceholder: 'Nome',
       cellStyle: { textAlign: 'left', minWidth: '300px' },
 
     },
     {
-      title: 'Torre',
-      field: 'unidade.grupo.nome_resumido',
+      title: 'Nome Chamado',
+      field: 'nome_chamado',
       type: 'string',
-      filterPlaceholder: 'Torre',
-      // cellStyle: { textAlign: 'left', maxWidth: '100px' },
-    },
-    {
-      title: 'Apto',
-      field: 'unidade.nome',
-      type: 'string',
-      filterPlaceholder: 'Apto',
-      // cellStyle: { textAlign: 'left', minWidth: '300px' },
+      filterPlaceholder: 'Nome Chamado',
+      cellStyle: { textAlign: 'left', minWidth: '300px' },
 
     },
-    /* {
-      title: 'Unidade',
-      field: 'unidade',
+    {
+      title: 'CPF',
+      field: 'cpf',
       type: 'string',
-      filterPlaceholder: 'Unidade',
+      filterPlaceholder: 'CPF',
+      cellStyle: { textAlign: 'left', minWidth: '300px' },
       render: rowData => {
-        if (rowData.unidade) {
-          return (
-            `${rowData.unidade.grupo.nome.substr(0, 2)} / ${rowData.unidade.nome}`
-          );
+        if (rowData.cpf) {
+          return (`${String(rowData.cpf).substr(0, 3)}.***.***-${String(rowData.cpf).substr(9, 2)}`);
         }
         return ' ';
       }
-    }, */
-    {
-      title: 'Tipo',
-      field: 'tipo.tipo',
-      type: 'string',
-      filterPlaceholder: 'Tipo',
     },
-    /* {
+    {
       title: 'Ações',
       cellStyle: { textAlign: 'center' },
       headerStyle: { textAlign: 'center' },
       render: rowData => (
         <React.Fragment>
-          <Button size="small" onClick={() => alert('ok')} className={classes.btnAction}>
-            <AddCircle />
-            {' '}
-            &nbsp;
-            Add
+          <Button color="primary" size="small" onClick={() => (handleClickOpenVinculos(rowData.id, rowData.nome))} className={classes.btnVinculo}>
+            <VinculoIcon />
           </Button>
         </React.Fragment>
       )
-    } */
+    }
   ];
 
   const options = {
@@ -168,15 +162,21 @@ const Liberacao = props => {
 
   return (
     <>
-      <PapperBlock title="Liberações" desc="Lista de liberações">
+      <CadastroVinculosDlg
+        open={openVinculos}
+        dialogTitle={vinculoNome}
+        vinculos={vinculos}
+        handleClose={handleClickCloseVinculos}
+      />
+      <PapperBlock title="Cadastros" desc="Lista de cadastros">
         <DataTable
           tableRef={tableRef}
           options={options}
           style={cssTabela}
-          title="Unidades"
+          title="Cadastros"
           columns={columns}
           data={query => new Promise((resolve, reject) => {
-            getLiberacoes(dispatch, query).then(result => {
+            getCadastros(dispatch, query).then(result => {
               resolve({
                 data: result.data.data,
                 page: result.data.page,
