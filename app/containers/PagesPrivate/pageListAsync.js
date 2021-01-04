@@ -13,6 +13,10 @@ export const Liberacao = Loadable({
   loader: () => import('./Liberacao'),
   loading: Loading,
 });
+export const Ticket = Loadable({
+  loader: () => import('./Ticket'),
+  loading: Loading,
+});
 export const Liberacoes = Loadable({
   loader: () => import('./Liberacoes'),
   loading: Loading,

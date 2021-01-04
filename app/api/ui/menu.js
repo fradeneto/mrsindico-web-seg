@@ -23,6 +23,12 @@ module.exports = [
         icon: 'ios-add',
       },
       {
+        key: 'ticket',
+        name: 'Ticket',
+        link: '/ticket',
+        icon: 'ios-add',
+      },
+      {
         key: 'liberacoes',
         name: 'Liberações',
         link: '/liberacoes',
